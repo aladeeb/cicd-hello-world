@@ -21,7 +21,6 @@ jobs:
   print_output_from_workspace:
     <<: *defaults
     steps:
-      - checkout
       - attach_workspace:
           at: ~/
       - run:
