@@ -21,6 +21,11 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - run: echo You are gonna die!
+  say-goodbye:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - run: echo Goodbye!
 workflows:
   say-hello-workflow:
     jobs:
@@ -31,3 +36,9 @@ workflows:
       - tell-the-secret: 
           requires: 
             - say-the-name
+      - say-goodbay:
+          requires:
+            - say-hello
+            - say-hello
+            - say-the-name
+            - tell-the-secret
