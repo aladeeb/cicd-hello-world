@@ -1,9 +1,14 @@
+defaults: &defaults
+  docker:
+    - image: cimg/base:stable
+  working_directory: ~/
+
+
 version: 2.1
 
 jobs:
   save_hello_world_output:
-    docker:
-      - image: cimg/base:stable
+    <<: *defaults
     steps:
       - checkout
       - run:
@@ -14,8 +19,7 @@ jobs:
           paths:
             - output.txt
   print_output_from_workspace:
-    docker:
-      - image: cimg/base:stable
+    <<: *defaults
     steps:
       - checkout
       - attach_workspace:
