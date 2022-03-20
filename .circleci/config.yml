@@ -18,11 +18,11 @@ jobs:
       - image: cimg/base:stable
     steps:
       - checkout
+      - attach_workspace:
+          at: ~/
       - run:
           name: "Print output.txt's content"
           command: cat ~/output.txt
-      - attach_workspace:
-          at: ~/
   
 workflows:
   save_hello_world_output-workflow:
