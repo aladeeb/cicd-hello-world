@@ -1,45 +1,33 @@
 version: 2.1
 
 jobs:
-  say-hello:
+  save_hello_world_output:
     docker:
       - image: cimg/base:stable
     steps:
       - checkout
       - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
-  say-the-name:
+          name: "Create and store output.txt"
+          command: echo "Hello, World!"" > output.txt
+    persist_to_workspace:
+      root: /tmp/dir
+      paths:
+        - /tmp/dir/output.txt
+  print_output_from_workspace:
     docker:
-      - image: circleci/node:13.8.0
-        environment:
-          NAME: adeeb
+      - image: cimg/base:stable
     steps:
-      - run: echo Hello $NAME
-  tell-the-secret:
-    docker:
-      - image: circleci/node:13.8.0
-    steps:
-      - run: echo $SECRET
-      - run: echo $CIRCLE_WORKFLOW_ID
-  say-goodbye:
-    docker:
-      - image: circleci/node:13.8.0
-    steps:
-      - run: echo Goodbye!
-      - run: echo My pipeline id is << pipeline.id >> and my git branch is << pipeline.git.branch >>.
+      - checkout
+      - run:
+          name: "Print output.txt's content"
+          command: cat /tmp/dir/output.txt
+    attach_workspace:
+      at: tmp/dir
+  
 workflows:
-  say-hello-workflow:
+  save_hello_world_output-workflow:
     jobs:
-      - say-hello
-      - say-the-name:
+      - save_hello_world_output
+      - print_output_from_workspace:
           requires:
-            - say-hello
-      - tell-the-secret: 
-          requires: 
-            - say-the-name
-      - say-goodbye:
-          requires:
-            - say-hello
-            - say-the-name
-            - tell-the-secret
+            - save_hello_world_output

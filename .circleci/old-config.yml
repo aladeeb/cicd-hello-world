@@ -1,0 +1,45 @@
+version: 2.1
+
+jobs:
+  say-hello:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: "Say hello"
+          command: "echo Hello, World!"
+  say-the-name:
+    docker:
+      - image: circleci/node:13.8.0
+        environment:
+          NAME: adeeb
+    steps:
+      - run: echo Hello $NAME
+  tell-the-secret:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - run: echo $SECRET
+      - run: echo $CIRCLE_WORKFLOW_ID
+  say-goodbye:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - run: echo Goodbye!
+      - run: echo My pipeline id is << pipeline.id >> and my git branch is << pipeline.git.branch >>.
+workflows:
+  say-hello-workflow:
+    jobs:
+      - say-hello
+      - say-the-name:
+          requires:
+            - say-hello
+      - tell-the-secret: 
+          requires: 
+            - say-the-name
+      - say-goodbye:
+          requires:
+            - say-hello
+            - say-the-name
+            - tell-the-secret
