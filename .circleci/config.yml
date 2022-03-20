@@ -2,18 +2,17 @@ version: 2.1
 
 jobs:
   save_hello_world_output:
-    working_directory: ~/circleci-learn
     docker:
       - image: cimg/base:stable
     steps:
       - checkout
       - run:
           name: "Create and store output.txt"
-          command: echo "Hello, World!"" > ~/circleci-learn/output.txt
+          command: echo "Hello, World!"" > ~/output.txt
       - persist_to_workspace:
-          root: .
+          root: ~/
           paths:
-            - ~/circleci-learn/*
+            - output.txt
   print_output_from_workspace:
     docker:
       - image: cimg/base:stable
@@ -21,9 +20,9 @@ jobs:
       - checkout
       - run:
           name: "Print output.txt's content"
-          command: cat ~/circleci-learn/output.txt
+          command: cat ~/output.txt
       - attach_workspace:
-          at: ~/circleci-learn
+          at: ~/
   
 workflows:
   save_hello_world_output-workflow:
