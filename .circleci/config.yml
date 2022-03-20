@@ -36,9 +36,8 @@ workflows:
       - tell-the-secret: 
           requires: 
             - say-the-name
-      - say-goodbay:
+      - say-goodbye:
           requires:
-            - say-hello
             - say-hello
             - say-the-name
             - tell-the-secret
