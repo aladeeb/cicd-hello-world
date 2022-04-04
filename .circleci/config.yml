@@ -3,7 +3,7 @@ version: 2.1
 commands:
   print_job_id:
     steps:
-      - runs: echo ${CIRCLE_WORKFLOW_ID}
+      - run: sdsaasd ${CIRCLE_WORKFLOW_ID}
       - run:
           name: failure rollback
           command: echo pipeline failed due to unkown error.
